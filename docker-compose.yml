@@ -48,9 +48,11 @@ services:
       - "traefik.frontend.headers.frameDeny=true"
 
 ########################################################################################
-# Graphana
+# Grafana
 # https://hub.docker.com/r/grafana/grafana/
 # https://grafana.com/docs/installation/docker/
+# 
+You may have issues with file permissions, more information here: http://docs.grafana.org/installation/docker/#migration-from-a-previous-version-of-the-docker-container-to-5-1-or-later
 ########################################################################################
 
   grafana:
@@ -67,18 +69,16 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./grafana:/etc/grafana/provisioning # Graphana settings and dashboards
+      - ./grafana:/etc/grafana/provisioning # Grafana settings and dashboards
       - ${VOLUME_DIR}/grafana:/var/lib/grafana # Data directory
       #- grafana_data:/var/lib/grafana # Data directory
-    env_file:
-      - ./grafana/config.monitoring
     networks:
       - backend
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=graphana"
-      - "traefik.frontend.rule=Host:graphana.${FQDN}"
+      - "traefik.backend=grafana"
+      - "traefik.frontend.rule=Host:grafana.${FQDN}"
       - "traefik.port=3000"
       - "traefik.docker.network=backend"
       - "traefik.frontend.headers.SSLRedirect=true"
