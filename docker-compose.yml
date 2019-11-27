@@ -56,7 +56,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
-    user: 472 # http://docs.grafana.org/installation/docker/#migration-from-a-previous-version-of-the-docker-container-to-5-1-or-later
+    user: "472" # http://docs.grafana.org/installation/docker/#migration-from-a-previous-version-of-the-docker-container-to-5-1-or-later
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
