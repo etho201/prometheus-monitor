@@ -17,6 +17,7 @@ services:
   prometheus:
     image: quay.io/prometheus/prometheus
     container_name: prometheus
+    user: "root" # https://github.com/prometheus/prometheus/pull/2859
     restart: unless-stopped
     volumes:
         - ./prometheus:/etc/prometheus # Prometheus settings
@@ -56,7 +57,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
-    user: "472" # http://docs.grafana.org/installation/docker/#migration-from-a-previous-version-of-the-docker-container-to-5-1-or-later
+    user: "root" # http://docs.grafana.org/installation/docker/#migration-from-a-previous-version-of-the-docker-container-to-5-1-or-later
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
