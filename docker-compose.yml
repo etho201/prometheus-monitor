@@ -18,7 +18,6 @@ services:
     image: quay.io/prometheus/prometheus
     container_name: prometheus
     user: "root" # https://github.com/prometheus/prometheus/pull/2859
-    restart: unless-stopped
     volumes:
         - ./prometheus:/etc/prometheus # Prometheus settings
         - ${VOLUME_DIR}/prometheus:/prometheus # Data directory
@@ -32,6 +31,7 @@ services:
       - backend
     #ports:
       #- 9090:9090
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.backend=prometheus"
@@ -74,7 +74,7 @@ services:
       #- grafana_data:/var/lib/grafana # Data directory
     networks:
       - backend
-    restart: always
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.backend=grafana"
@@ -118,7 +118,7 @@ services:
       #- 9100:9100
     networks:
       - backend
-    restart: always
+    restart: unless-stopped
 
 networks:
   backend:
