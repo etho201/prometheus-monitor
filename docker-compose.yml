@@ -120,6 +120,28 @@ services:
       - backend
     restart: unless-stopped
 
+########################################################################################
+# Cadvisor
+# https://github.com/google/cadvisor
+# https://hub.docker.com/r/zcube/cadvisor
+########################################################################################
+
+  cadvisor:
+    image: zcube/cadvisor
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    #expose:
+      #- 8080
+    networks:
+      - backend
+    restart: unless-stopped
+
+########################################################################################
+
 networks:
   backend:
     external:
