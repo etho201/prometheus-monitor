@@ -29,31 +29,9 @@ services:
     #network_mode: host
     networks:
       - backend
-    #ports:
-      #- 9090:9090
+    ports:
+      - 9090:9090
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=prometheus"
-      - "traefik.frontend.rule=Host:prometheus.${FQDN}"
-      - "traefik.port=9090"
-      - "traefik.docker.network=backend"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=example.com"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
-      # Require oauth2 for authentication
-      - "traefik.frontend.auth.forward.address=https://${FQDN}/oauth2/auth"
-      - "traefik.frontend.auth.forward.trustForwardHeader=true"
-      - "traefik.frontend.auth.forward.authResponseHeaders=X-Auth-Request-User,X-Auth-Request-Email,Authorization,Set-Cookie"
-      - "traefik.frontend.errors.401.backend=oauth2"
-      - "traefik.frontend.errors.401.status=401"
-      - "traefik.frontend.errors.401.query=/oauth2/sign_in"
 
 ########################################################################################
 # Grafana
