@@ -29,25 +29,16 @@ scrape_configs:
     static_configs:
     - targets: ['localhost:9090']
 
+  # Container monitoring
   - job_name: 'cadvisor'
     scrape_interval: 5s
     static_configs:
       - targets: ['cadvisor:8080']
 
-  # Raspberry Pi 4
-  - job_name: pi4
-    #scrape_interval: 5s
+  # Nodes
+  - job_name: node
+    scrape_interval: 5s
     static_configs:
-    - targets: ['node-exporter:9100']
-
-  # Raspberry Pi 3
-  - job_name: pi3
-    #scrape_interval: 5s
-    static_configs:
-    - targets: ['192.168.1.20:9100']
-
-  # Lenovo X1
-  - job_name: erik-x1
-    #scrape_interval: 5s
-    static_configs:
-    - targets: ['192.168.1.124:9100']
+    - targets: ['node-exporter:9100'] # Raspberry Pi 4
+    - targets: ['192.168.1.20:9100']  # Raspberry Pi 3
+    - targets: ['192.168.1.124:9100'] # Lenovo X1 Extreme
