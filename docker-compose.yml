@@ -110,7 +110,7 @@ services:
     ports:
       - 9093:9093
     volumes:
-      - ${CONFIG_DIR}/alertmanager/:/etc/alertmanager/
+      - ${CONFIG_DIR}/alertmanager:/etc/alertmanager
     networks:
       - backend
     restart: always
