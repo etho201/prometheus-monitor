@@ -99,6 +99,26 @@ services:
       - "traefik.frontend.headers.frameDeny=true"
 
 ########################################################################################
+# Alert Manager
+# https://prometheus.io/docs/alerting/alertmanager/
+# 
+########################################################################################
+
+  alertmanager:
+    image: quay.io/prometheus/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ${CONFIG_DIR}/alertmanager/:/etc/alertmanager/
+    networks:
+      - backend
+    restart: always
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
+########################################################################################
 # Node Exporter
 # https://hub.docker.com/r/prom/node-exporter/
 # https://github.com/prometheus/node_exporter
