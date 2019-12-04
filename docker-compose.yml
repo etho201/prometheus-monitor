@@ -168,6 +168,38 @@ services:
     restart: unless-stopped
 
 ########################################################################################
+CoreDNS
+https://github.com/coredns/coredns.io
+########################################################################################
+
+  coredns:
+    image: coredns/coredns
+    container_name: coredns
+    ports:
+      - 53:53/udp
+    volumes:
+      - ./coredns:/coredns-config
+    command: -conf coredns-config/Corefile
+    networks:
+      - backend
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=coredns"
+      - "traefik.frontend.rule=Host:coredns.${FQDN}"
+      - "traefik.port=53"
+      - "traefik.docker.network=backend"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=example.com"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+
+########################################################################################
 
 networks:
   backend:
