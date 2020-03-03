@@ -168,8 +168,8 @@ services:
     restart: unless-stopped
 
 ########################################################################################
-CoreDNS
-https://github.com/coredns/coredns.io
+# CoreDNS
+# https://github.com/coredns/coredns.io
 ########################################################################################
 
   coredns:
