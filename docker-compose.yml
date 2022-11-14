@@ -87,6 +87,19 @@ services:
       - "traefik.http.routers.grafana-rtr.service=grafana-svc"
       - "traefik.http.services.grafana-svc.loadbalancer.server.port=3000"
 
+  grafana-sidecar:
+    image: quay.io/ansible/ansible-runner
+    container_name: grafana-sidecar
+    environment:
+      - GRAFANA_PASSOWRD=${GRAFANA_PASSWORD}
+    volumes:
+      - ./ansible-runner:/runner
+    command:
+      - ansible-galaxy collection install -r ./collections/requirements.yml -p ./collections
+      - ansible-playbook playbook.yml
+    networks:
+      - backend
+
 ########################################################################################
 # Alert Manager
 # https://prometheus.io/docs/alerting/alertmanager/
