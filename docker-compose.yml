@@ -88,15 +88,16 @@ services:
       - "traefik.http.services.grafana-svc.loadbalancer.server.port=3000"
 
   grafana-sidecar:
-    image: alpine
+    image: ansible-job
+    build:
+      context: ./grafana-sidecar
     container_name: grafana-sidecar
     environment:
       - GRAFANA_PASSOWRD=${GRAFANA_PASSWORD}
     volumes:
-      - ./ansible-runner:/root
+      - ./grafana-sidecar:/tmp
     command: |
       sh -c '
-      apk add ansible;
       ansible-galaxy collection install -r ./collections/requirements.yml -p ./collections;
       ansible-playbook playbook.yml
       '
