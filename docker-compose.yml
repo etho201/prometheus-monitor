@@ -92,14 +92,12 @@ services:
     build:
       context: ./grafana-sidecar
     container_name: grafana-sidecar
-    environment:
-      - GRAFANA_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
       - ./grafana-sidecar:/tmp
     command: |
       sh -c '
       ansible-galaxy collection install -r ./collections/requirements.yml -p ./collections;
-      ansible-playbook playbook.yml
+      ansible-playbook --extra-vars "GRAFANA_PASSWORD=${GRAFANA_PASSWORD}" playbook.yml
       '
     networks:
       - backend
