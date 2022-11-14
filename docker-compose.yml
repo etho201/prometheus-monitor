@@ -93,7 +93,7 @@ services:
       context: ./grafana-sidecar
     container_name: grafana-sidecar
     environment:
-      - GRAFANA_PASSOWRD=${GRAFANA_PASSWORD}
+      - GRAFANA_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
       - ./grafana-sidecar:/tmp
     command: |
