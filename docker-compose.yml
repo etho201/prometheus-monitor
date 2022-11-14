@@ -94,12 +94,15 @@ services:
       - GRAFANA_PASSOWRD=${GRAFANA_PASSWORD}
     volumes:
       - ./ansible-runner:/root
-    command:
-      - apk add ansible
-      - ansible-galaxy collection install -r ./collections/requirements.yml -p ./collections
-      - ansible-playbook playbook.yml
+    command: |
+      sh -c '
+      apk add ansible;
+      ansible-galaxy collection install -r ./collections/requirements.yml -p ./collections;
+      ansible-playbook playbook.yml
+      '
     networks:
       - backend
+    restart: never
 
 ########################################################################################
 # Alert Manager
