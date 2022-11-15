@@ -2,3 +2,4 @@
 .env
 *.ovpn
 ansible_collections
+galaxy_cache
