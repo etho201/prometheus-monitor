@@ -4,14 +4,22 @@
   gather_facts: false
 
   tasks:
+    - name: Create a folder for custom dashboards
+      community.grafana.grafana_folder:
+        url: http://grafana:3000
+        grafana_user: "admin"
+        grafana_password: "{{ GRAFANA_PASSWORD }}"
+        title: "custom"
+        state: present
+
     - name: Import "Node Exporter Full" dashboard
       community.grafana.grafana_dashboard:
-        grafana_url: https://grafana
+        grafana_url: http://grafana:3000
         grafana_user: "admin"
         grafana_password: "{{ GRAFANA_PASSWORD }}"
         state: present
         commit_message: Updated by ansible
         overwrite: yes
         folder: custom
-        dashboard_id: 1860
-        dashboard_revision: 1
+        # dashboard_id: 1860
+        dashboard_url: https://raw.githubusercontent.com/rfmoz/grafana-dashboards/master/prometheus/node-exporter-full.json
