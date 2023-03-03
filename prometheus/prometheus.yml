@@ -29,11 +29,17 @@ scrape_configs:
     static_configs:
     - targets: ['localhost:9090']
 
+  # Traefik
+  - job_name: 'traefik'
+    scrape_interval: 10s
+    static_configs:
+    - targets: ['traefik:8080']
+
   # Containers
   - job_name: 'cadvisor'
     scrape_interval: 5s
     static_configs:
-      - targets: ['cadvisor:8080']
+    - targets: ['cadvisor:8080']
 
   # Nodes
   - job_name: node
