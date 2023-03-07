@@ -48,3 +48,8 @@ datasources:
   version: 1
   # <bool> allow users to edit datasources from the UI.
   editable: true
+
+- name: Loki
+  type: loki
+  url: http://loki:3100
+  isDefault: true
