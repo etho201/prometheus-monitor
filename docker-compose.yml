@@ -158,6 +158,7 @@ services:
 
   loki:
     image: grafana/loki:latest
+    container_name: loki
     # ports:
     #   - "3100"
     volumes:
@@ -165,6 +166,7 @@ services:
 
   promtail:
     image: grafana/promtail:latest
+    container_name: promtail
     volumes:
       - ./loki/promtail-config.yaml:/etc/promtail/config.yml
       # to read container labels and logs
