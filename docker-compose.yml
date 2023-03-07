@@ -153,6 +153,25 @@ services:
     restart: unless-stopped
 
 ########################################################################################
+# Logging
+########################################################################################
+
+  loki:
+    image: grafana/loki:latest
+    # ports:
+    #   - "3100"
+    volumes:
+      - ${VOLUME_DIR}/loki:/loki # Data directory
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./loki/promtail-config.yaml:/etc/promtail/config.yml
+      # to read container labels and logs
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers
+
+########################################################################################
 # Cadvisor
 # https://github.com/google/cadvisor
 # https://hub.docker.com/r/zcube/cadvisor
