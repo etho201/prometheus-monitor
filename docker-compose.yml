@@ -161,11 +161,15 @@ services:
     container_name: loki
     # ports:
     #   - "3100"
+    networks:
+      - traefik
     volumes:
       - ${VOLUME_DIR}/loki:/loki # Data directory
 
   promtail:
     image: grafana/promtail:latest
+    networks:
+      - traefik
     container_name: promtail
     volumes:
       - ./loki/promtail-config.yaml:/etc/promtail/config.yml
