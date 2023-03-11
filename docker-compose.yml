@@ -41,7 +41,7 @@ services:
       ## Middlewares
       # - "traefik.http.routers.prometheus-rtr.middlewares=chain-no-auth@file" # No Authentication
       # - "traefik.http.routers.prometheus-rtr.middlewares=chain-basic-auth@file" # Basic Authentication
-      - "traefik.http.routers.prometheus-rtr.middlewares=chain-oauth@file" # OAuth 2.0
+      - "traefik.http.routers.prometheus-rtr.middlewares=chain-oauth2-proxy@file" # OAuth 2.0
       ## HTTP Services
       - "traefik.http.routers.prometheus-rtr.service=prometheus-svc"
       - "traefik.http.services.prometheus-svc.loadbalancer.server.port=9090"
@@ -82,7 +82,7 @@ services:
       ## Middlewares
       # - "traefik.http.routers.grafana-rtr.middlewares=chain-no-auth@file" # No Authentication
       # - "traefik.http.routers.grafana-rtr.middlewares=chain-basic-auth@file" # Basic Authentication
-      - "traefik.http.routers.grafana-rtr.middlewares=chain-oauth@file" # OAuth 2.0
+      - "traefik.http.routers.grafana-rtr.middlewares=chain-oauth2-proxy@file" # OAuth 2.0
       ## HTTP Services
       - "traefik.http.routers.grafana-rtr.service=grafana-svc"
       - "traefik.http.services.grafana-svc.loadbalancer.server.port=3000"
@@ -208,7 +208,7 @@ services:
   #     ## Middlewares
   #     # - "traefik.http.routers.cadvisor-rtr.middlewares=chain-no-auth@file" # No Authentication
   #     # - "traefik.http.routers.cadvisor-rtr.middlewares=chain-basic-auth@file" # Basic Authentication
-  #     - "traefik.http.routers.cadvisor-rtr.middlewares=chain-oauth@file" # OAuth 2.0
+  #     - "traefik.http.routers.cadvisor-rtr.middlewares=chain-oauth2-proxy@file" # OAuth 2.0
   #     ## HTTP Services
   #     - "traefik.http.routers.cadvisor-rtr.service=cadvisor-svc"
   #     - "traefik.http.services.cadvisor-svc.loadbalancer.server.port=8080"
@@ -238,7 +238,7 @@ services:
   #     ## Middlewares
   #     # - "traefik.http.routers.coredns-rtr.middlewares=chain-no-auth@file" # No Authentication
   #     # - "traefik.http.routers.coredns-rtr.middlewares=chain-basic-auth@file" # Basic Authentication
-  #     - "traefik.http.routers.coredns-rtr.middlewares=chain-oauth@file" # OAuth 2.0
+  #     - "traefik.http.routers.coredns-rtr.middlewares=chain-oauth2-proxy@file" # OAuth 2.0
   #     ## HTTP Services
   #     - "traefik.http.routers.coredns-rtr.service=coredns-svc"
   #     - "traefik.http.services.coredns-svc.loadbalancer.server.port=53"
