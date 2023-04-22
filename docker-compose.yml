@@ -163,6 +163,7 @@ services:
     #   - "3100"
     networks:
       - traefik
+    restart: always
     volumes:
       - ${VOLUME_DIR}/loki:/loki # Data directory
 
@@ -171,6 +172,7 @@ services:
     networks:
       - traefik
     container_name: promtail
+    restart: always  
     volumes:
       - ./loki/promtail-config.yaml:/etc/promtail/config.yml
       # to read container labels and logs
