@@ -23,3 +23,15 @@
         folder: custom
         # dashboard_id: 1860
         dashboard_url: https://raw.githubusercontent.com/rfmoz/grafana-dashboards/master/prometheus/node-exporter-full.json
+
+    - name: Import "Traefik Official Standalone" dashboard
+      community.grafana.grafana_dashboard:
+        grafana_url: http://grafana:3000
+        grafana_user: "admin"
+        grafana_password: "{{ GRAFANA_PASSWORD }}"
+        state: present
+        commit_message: Updated by ansible
+        overwrite: yes
+        folder: custom
+        # dashboard_id: 17346
+        dashboard_url: https://raw.githubusercontent.com/traefik/traefik/master/contrib/grafana/traefik.json
