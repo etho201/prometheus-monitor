@@ -45,9 +45,9 @@ scrape_configs:
   - job_name: node
     scrape_interval: 5s
     static_configs:
-    - targets: ['node-exporter:9100', 'cadvisor:8080'] # Raspberry Pi 4
-    - targets: ['192.168.1.55:9100']  # Raspberry Pi 3
-    - targets: ['192.168.1.124:9100'] # Lenovo X1 Extreme
+    - targets: ['node-exporter:9100'] #, 'cadvisor:8080'] # Raspberry Pi 4
+    #- targets: ['192.168.1.55:9100']  # Raspberry Pi 3
+    #- targets: ['192.168.1.124:9100'] # Lenovo X1 Extreme
 
   - job_name: "healthchecks"
     scrape_interval: 60s

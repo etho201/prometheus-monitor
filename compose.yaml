@@ -1,5 +1,5 @@
 ---
-version: '3.7'
+name: prometheus-monitor
 
 #volumes:
     #prometheus_data: {}
@@ -186,7 +186,7 @@ services:
 ########################################################################################
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor-arm64:latest
+    image: gcr.io/cadvisor/cadvisor-arm64:v0.50.0
     container_name: cadvisor
     volumes:
       - /:/rootfs:ro
