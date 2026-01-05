@@ -64,6 +64,8 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SERVER_ROOT_URL=https://grafana.${FQDN}/
       - GF_AUTH_OAUTH_ALLOW_INSECURE_EMAIL_LOOKUP=true
+      - GF_AUTH_DISABLE_LOGIN_FORM=true # set to true if using OIDC
+      - GF_AUTH_OAUTH_AUTO_LOGIN=true # set to true if using OIDC
     depends_on:
       - prometheus
     #ports:
