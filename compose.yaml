@@ -17,6 +17,10 @@ services:
   prometheus:
     image: quay.io/prometheus/prometheus
     container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-remote-write-receiver'
     user: "root" # https://github.com/prometheus/prometheus/pull/2859
     volumes:
         - ./prometheus:/etc/prometheus # Prometheus settings
@@ -66,6 +70,7 @@ services:
       - GF_AUTH_OAUTH_ALLOW_INSECURE_EMAIL_LOOKUP=true
       - GF_AUTH_DISABLE_LOGIN_FORM=true # set to true if using OIDC
       - GF_AUTH_OAUTH_AUTO_LOGIN=true # set to true if using OIDC
+      - GF_FEATURE_TOGGLES=dashboardNewLayouts # Dashboard v2 schema + Dynamic Dashboards (GA in v13)
     depends_on:
       - prometheus
     #ports:
@@ -106,6 +111,46 @@ services:
     networks:
       - traefik
     restart: "no"
+
+########################################################################################
+# Certbot (Let's Encrypt) - ONLY needed on a standalone host WITHOUT Traefik
+# --------------------------------------------------------------------------------------
+# On THIS host (sharing the Pi with Traefik), Traefik issues and serves its own certs via
+# its Cloudflare ACME wildcard (*.coretechonomy.com), so certbot is NOT needed here.
+#
+# ENABLE this ONLY IF YOU RUN THIS STACK ON A SEPARATE HOST that does NOT run Traefik.
+# It issues/renews Let's Encrypt certs (Cloudflare DNS-01) for the prometheus domains and
+# renews them every 12h. Uncomment the block, then:  docker compose up -d certbot
+#
+# certbot:
+#   image: certbot/dns-cloudflare:latest
+#   container_name: certbot-prometheus
+#   restart: unless-stopped
+#   entrypoint:
+#     - /bin/sh
+#     - -c
+#     - |
+#       if [ ! -d "/etc/letsencrypt/live/prometheus-remote-write.${FQDN}" ]; then
+#         echo "=== Initializing Let's Encrypt Cert ==="
+#         certbot certonly --dns-cloudflare --dns-cloudflare-credentials /etc/cloudflare-creds/cloudflare.ini --non-interactive --agree-tos -m ${EMAIL} -d prometheus-remote-write.${FQDN}
+#       else
+#         echo "=== Cert already exists, skipping initial setup ==="
+#       fi
+#       trap exit TERM
+#       while :; do
+#         certbot renew --dns-cloudflare-credentials /etc/cloudflare-creds/cloudflare.ini
+#         sleep 12h & wait $$!
+#       done
+#   healthcheck:
+#     test: ["CMD", "sh", "-c", "test -f /etc/letsencrypt/live/prometheus-remote-write.${FQDN}/fullchain.pem"]
+#     interval: 5s
+#     timeout: 2s
+#     retries: 24
+#   volumes:
+#     - ${VOLUME_DIR}/letsencrypt:/etc/letsencrypt
+#     - ${CONFIG_DIR}/certbot/cloudflare.ini:/etc/cloudflare-creds/cloudflare.ini:ro
+#   networks:
+#     - traefik
 
 ########################################################################################
 # Alert Manager

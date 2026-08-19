@@ -1,0 +1,58 @@
+groups:
+  - name: windows_msp
+    rules:
+      - alert: WindowsNodeDown
+        expr: up{job="windows_exporter"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Windows node {{ $labels.instance }} is down"
+
+      - alert: WindowsDiskSpaceHigh
+        expr: (100 - 100 * windows_logical_disk_free_bytes / windows_logical_disk_size_bytes) > 85
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Disk {{ $labels.volume }} on {{ $labels.instance }} is {{ $value | humanizePercentage }} full"
+
+      - alert: WindowsCpuHigh
+        expr: 100 - 100 * rate(windows_cpu_time_total{mode="idle"}[5m]) / rate(windows_cpu_time_total[5m]) > 90
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU usage high on {{ $labels.instance }}"
+
+      - alert: WindowsPendingReboot
+        expr: windows_pending_reboot == 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $labels.instance }} requires a reboot"
+
+      - alert: WindowsPendingUpdates
+        expr: windows_pending_updates_total > 10
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $labels.instance }} has {{ $value }} pending updates"
+
+      - alert: WindowsDefenderProtectionOff
+        expr: windows_defender_real_time_protection == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Defender real-time protection is off on {{ $labels.instance }}"
+
+      - alert: WindowsDefenderDefinitionsStale
+        expr: windows_defender_definition_age_days > 7
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Defender definitions are {{ $value }} days old on {{ $labels.instance }}"
