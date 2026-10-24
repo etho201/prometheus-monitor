@@ -70,7 +70,9 @@ services:
       - GF_AUTH_OAUTH_ALLOW_INSECURE_EMAIL_LOOKUP=true
       - GF_AUTH_DISABLE_LOGIN_FORM=true # set to true if using OIDC
       - GF_AUTH_OAUTH_AUTO_LOGIN=true # set to true if using OIDC
-      - GF_FEATURE_TOGGLES=dashboardNewLayouts # Dashboard v2 schema + Dynamic Dashboards (GA in v13)
+      - GF_FEATURE_TOGGLES_ENABLE=dashboardNewLayouts externalServiceAccounts # Dashboard v2 schema + Ask O11y AI
+      - GF_AUTH_MANAGED_SERVICE_ACCOUNTS_ENABLED=true # for Ask O11y AI
+      - GF_PLUGINS_APP_CLIENT_SECRET_MUTATION_ENABLED=true
     depends_on:
       - prometheus
     #ports:
@@ -111,6 +113,38 @@ services:
     networks:
       - traefik
     restart: "no"
+
+########################################################################################
+# Grafana MCP server (mcp-grafana) for Ask O11y
+# https://github.com/grafana/mcp-grafana
+# --------------------------------------------------------------------------------------
+# Ask O11y's built-in MCP runs inside grafana-llm-app, which calls Grafana on the public
+# app URL. That URL sits behind oauth2-proxy here, so its tool calls get 401 and the
+# agent cannot query anything. This sidecar talks to Grafana over the internal Docker
+# network instead, and Ask O11y is pointed at it (see grafana/plugins/ask-o11y.yaml).
+# Not published to the host; reachable only on the `traefik` network.
+########################################################################################
+
+  mcp-grafana:
+    image: mcp/grafana:latest
+    container_name: mcp-grafana
+    command:
+      - "-t"
+      - "streamable-http"
+      - "-address"
+      - "0.0.0.0:8000"
+      - "-allowed-hosts"
+      - "mcp-grafana:8000,localhost:8000,127.0.0.1:8000"
+    environment:
+      - GRAFANA_URL=http://grafana:3000
+      - GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_O11Y_TOKEN}
+      - GRAFANA_ORG_ID=1
+      - TZ=${TZ}
+    depends_on:
+      - grafana
+    networks:
+      - traefik
+    restart: unless-stopped
 
 ########################################################################################
 # Certbot (Let's Encrypt) - ONLY needed on a standalone host WITHOUT Traefik
