@@ -268,33 +268,33 @@ services:
 # https://github.com/google/cadvisor/releases
 ########################################################################################
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor-arm64:v0.50.0
-    container_name: cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    #ports:
-      #- 8080:8080
-    networks:
-      - traefik
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      ## HTTP Routers
-      - "traefik.http.routers.cadvisor-rtr.entrypoints=websecure"
-      - "traefik.http.routers.cadvisor-rtr.rule=Host(`cadvisor.$FQDN`)"
-      - "traefik.http.routers.cadvisor-rtr.tls=true"
-      ## Middlewares
-      # - "traefik.http.routers.cadvisor-rtr.middlewares=chain-no-auth@file" # No Authentication
-      # - "traefik.http.routers.cadvisor-rtr.middlewares=chain-basic-auth@file" # Basic Authentication
-      - "traefik.http.routers.cadvisor-rtr.middlewares=chain-oauth2-proxy@file" # OAuth 2.0
-      ## HTTP Services
-      - "traefik.http.routers.cadvisor-rtr.service=cadvisor-svc"
-      - "traefik.http.services.cadvisor-svc.loadbalancer.server.port=8080"
+  # cadvisor:
+  #   image: gcr.io/cadvisor/cadvisor-arm64:v0.50.0
+  #   container_name: cadvisor
+  #   volumes:
+  #     - /:/rootfs:ro
+  #     - /var/run:/var/run:ro
+  #     - /sys:/sys:ro
+  #     - /var/lib/docker:/var/lib/docker:ro
+  #     - /dev/disk/:/dev/disk:ro
+  #   #ports:
+  #     #- 8080:8080
+  #   networks:
+  #     - traefik
+  #   restart: unless-stopped
+  #   labels:
+  #     - "traefik.enable=true"
+  #     ## HTTP Routers
+  #     - "traefik.http.routers.cadvisor-rtr.entrypoints=websecure"
+  #     - "traefik.http.routers.cadvisor-rtr.rule=Host(`cadvisor.$FQDN`)"
+  #     - "traefik.http.routers.cadvisor-rtr.tls=true"
+  #     ## Middlewares
+  #     # - "traefik.http.routers.cadvisor-rtr.middlewares=chain-no-auth@file" # No Authentication
+  #     # - "traefik.http.routers.cadvisor-rtr.middlewares=chain-basic-auth@file" # Basic Authentication
+  #     - "traefik.http.routers.cadvisor-rtr.middlewares=chain-oauth2-proxy@file" # OAuth 2.0
+  #     ## HTTP Services
+  #     - "traefik.http.routers.cadvisor-rtr.service=cadvisor-svc"
+  #     - "traefik.http.services.cadvisor-svc.loadbalancer.server.port=8080"
 
 ########################################################################################
 # CoreDNS
